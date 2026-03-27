@@ -6,8 +6,10 @@ export default [
 	{
 		ignores: [
 			'.svelte-kit',
+			'.storybook',
 			'build',
 			'node_modules',
+			'src/lib/paraglide',
 			'**/*.config.*',
 		],
 	},

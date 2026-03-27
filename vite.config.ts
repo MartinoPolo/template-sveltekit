@@ -1,11 +1,29 @@
 import { defineConfig } from 'vite-plus';
 import { sveltekit } from '@sveltejs/kit/vite';
 import tailwindcss from '@tailwindcss/vite';
+import { paraglideVitePlugin } from '@inlang/paraglide-js';
 
 export default defineConfig({
-	plugins: [tailwindcss(), sveltekit()],
+	plugins: [
+		tailwindcss(),
+		sveltekit(),
+		paraglideVitePlugin({
+			project: './project.inlang',
+			outdir: './src/lib/paraglide',
+			strategy: ['url', 'cookie', 'baseLocale'],
+			urlPatterns: [
+				{
+					pattern: '/:path(.*)?',
+					localized: [
+						['en', '/:path(.*)?'],
+						['cs', '/cs/:path(.*)?'],
+					],
+				},
+			],
+		}),
+	],
 	staged: {
-		'*': 'vp check --fix',
+		'*': ['vp lint --threads=1 --fix', 'vp check --no-lint --fix'],
 	},
 	lint: {
 		options: {

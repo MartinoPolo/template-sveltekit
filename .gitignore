@@ -1,5 +1,6 @@
 node_modules/
 .svelte-kit/
+src/lib/paraglide/
 build/
 dist/
 .env
@@ -11,3 +12,6 @@ drizzle/meta/
 coverage/
 playwright-report/
 test-results/
+storybook-static/
+
+*.local*

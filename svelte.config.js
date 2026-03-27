@@ -1,4 +1,4 @@
-import adapter from '@sveltejs/adapter-auto';
+import adapter from '@sveltejs/adapter-cloudflare';
 import { relative, sep } from 'node:path';
 
 /** @type {import('@sveltejs/kit').Config} */
@@ -11,14 +11,26 @@ const config = {
 			const isExternalLibrary = pathSegments.includes('node_modules');
 
 			return isExternalLibrary ? undefined : true;
-		}
+		},
+		experimental: {
+			// enables `await` directly in components without {#await} blocks
+			async: true,
+		},
 	},
 	kit: {
-		// adapter-auto only supports some environments, see https://svelte.dev/docs/kit/adapter-auto for a list.
-		// If your environment is not supported, or you settled on a specific environment, switch out the adapter.
-		// See https://svelte.dev/docs/kit/adapters for more information about adapters.
-		adapter: adapter()
-	}
+		adapter: adapter(),
+		experimental: {
+			// type-safe client-server functions that always run on the server
+			remoteFunctions: true,
+		},
+	},
+	vitePlugin: {
+		// https://github.com/sveltejs/vite-plugin-svelte/blob/main/docs/inspector.md
+		inspector: {
+			toggleKeyCombo: 'alt-x',
+			showToggleButton: 'active',
+		},
+	},
 };
 
 export default config;
