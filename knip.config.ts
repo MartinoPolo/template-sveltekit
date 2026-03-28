@@ -7,7 +7,6 @@ const config: KnipConfig = {
 		'@typescript-eslint/parser',
 		'@node-rs/argon2',
 		'tailwindcss',
-		'@vitest/browser-playwright',
 		'vitest-browser-svelte',
 	],
 };

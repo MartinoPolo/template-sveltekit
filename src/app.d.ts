@@ -1,6 +1,6 @@
 // See https://svelte.dev/docs/kit/types#app.d.ts
 // for information about these interfaces
-import type { Session, User } from 'better-auth';
+import type { User, Session } from 'better-auth/minimal';
 
 declare global {
 	namespace App {
@@ -13,6 +13,9 @@ declare global {
 		// interface PageState {}
 		interface Platform {
 			env: Env;
+			ctx: ExecutionContext;
+			caches: CacheStorage;
+			cf?: IncomingRequestCfProperties;
 		}
 	}
 }

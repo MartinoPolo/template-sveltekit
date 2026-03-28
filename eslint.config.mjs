@@ -1,6 +1,7 @@
 import tseslint from 'typescript-eslint';
 import sveltePlugin from 'eslint-plugin-svelte';
 import svelteParser from 'svelte-eslint-parser';
+import storybook from 'eslint-plugin-storybook';
 
 export default [
 	{
@@ -15,6 +16,7 @@ export default [
 		],
 	},
 	...tseslint.configs.recommended,
+	...storybook.configs['flat/recommended'],
 	{
 		languageOptions: {
 			parserOptions: {
