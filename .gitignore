@@ -1,6 +1,7 @@
+# Dependencies
 node_modules/
 
-# Output
+# Build outputs
 .output
 .vercel
 .netlify
@@ -9,19 +10,45 @@ node_modules/
 build/
 dist/
 
-# OS
-.DS_Store
-Thumbs.db
-
-# Env
+# Environment & secrets
 .env
 .env.*
 !.env.example
 !.env.test
+*.pem
+*.key
+.secrets/
+credentials.json
+
+# TypeScript
+*.tsbuildinfo
+*.js.map
 
 # Vite
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+# Package manager artifacts
+.pnpm-store/
+
+# IDE & OS
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs & debug
+*.log
+pnpm-debug.log*
+debug/
+
+# Testing
+coverage/
+playwright-report/
+test-results/
 
 # Paraglide
 src/lib/paraglide/
@@ -30,11 +57,6 @@ project.inlang/cache/
 # Database
 drizzle/meta/
 
-# Testing
-coverage/
-playwright-report/
-test-results/
-
 # Storybook
 *storybook.log
 storybook-static/
@@ -42,6 +64,8 @@ storybook-static/
 # Cloudflare Types
 worker-configuration.d.ts
 
-*.log
-*.local*
-.vscode/settings.json
+# Backup folders
+**/backup/
+
+# Local convention
+*.local.*
