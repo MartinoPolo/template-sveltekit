@@ -2,6 +2,8 @@ import tseslint from 'typescript-eslint';
 import sveltePlugin from 'eslint-plugin-svelte';
 import svelteParser from 'svelte-eslint-parser';
 import storybook from 'eslint-plugin-storybook';
+import globals from 'globals';
+import svelteConfig from './svelte.config.js';
 
 export default [
 	{
@@ -19,6 +21,7 @@ export default [
 	...storybook.configs['flat/recommended'],
 	{
 		languageOptions: {
+			globals: { ...globals.browser, ...globals.node },
 			parserOptions: {
 				extraFileExtensions: ['.svelte'],
 				project: true,
@@ -26,6 +29,9 @@ export default [
 			},
 		},
 		rules: {
+			// typescript-eslint recommends disabling no-undef for TS projects
+			// https://typescript-eslint.io/troubleshooting/faqs/eslint/#i-get-errors-from-the-no-undef-rule-about-global-variables-not-being-defined-even-though-there-are-no-typescript-errors
+			'no-undef': 'off',
 			// Gap rules not covered by OxLint
 			'@typescript-eslint/strict-boolean-expressions': 'error',
 			'@typescript-eslint/switch-exhaustiveness-check': [
@@ -68,6 +74,7 @@ export default [
 				parser: '@typescript-eslint/parser',
 				extraFileExtensions: ['.svelte'],
 				project: true,
+				svelteConfig,
 				svelteFeatures: {
 					experimentalGenerics: true,
 				},

@@ -11,6 +11,9 @@ const dirname =
 	typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
+	server: {
+		open: true,
+	},
 	plugins: [
 		tailwindcss(),
 		sveltekit(),

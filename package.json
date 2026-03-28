@@ -53,6 +53,7 @@
 		"eslint": "^10.1.0",
 		"eslint-plugin-storybook": "^10.3.3",
 		"eslint-plugin-svelte": "^3.16.0",
+		"globals": "^17.4.0",
 		"knip": "^6.0.6",
 		"playwright": "^1.58.2",
 		"postcss-html": "^1.8.1",
