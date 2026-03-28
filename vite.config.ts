@@ -32,8 +32,9 @@ export default defineConfig({
 		},
 	},
 	test: {
-		environment: 'jsdom',
-		include: ['src/**/*.test.{js,ts}'],
+		expect: {
+			requireAssertions: true,
+		},
 		coverage: {
 			thresholds: {
 				statements: 80,
@@ -42,5 +43,30 @@ export default defineConfig({
 				lines: 80,
 			},
 		},
+		projects: [
+			{
+				extends: './vite.config.ts',
+				test: {
+					name: 'client',
+					browser: {
+						enabled: true,
+						// @ts-expect-error -- vite-plus override causes type mismatch with vitest browser provider
+						provider: 'playwright',
+						instances: [{ browser: 'chromium', headless: true }],
+					},
+					include: ['src/**/*.svelte.{test,spec}.{js,ts}'],
+					exclude: ['src/lib/server/**'],
+				},
+			},
+			{
+				extends: './vite.config.ts',
+				test: {
+					name: 'server',
+					environment: 'node',
+					include: ['src/**/*.{test,spec}.{js,ts}'],
+					exclude: ['src/**/*.svelte.{test,spec}.{js,ts}'],
+				},
+			},
+		],
 	},
 });

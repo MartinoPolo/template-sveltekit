@@ -13,5 +13,7 @@ coverage/
 playwright-report/
 test-results/
 storybook-static/
+worker-configuration.d.ts
 
 *.local*
+*.vscode/settings.json

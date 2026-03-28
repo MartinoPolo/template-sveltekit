@@ -1,14 +1,14 @@
 import type { KnipConfig } from 'knip';
 
 const config: KnipConfig = {
-	entry: ['src/**/*.{ts,svelte}'],
+	entry: ['src/hooks.ts', 'src/lib/auth-client.ts'],
 	project: ['src/**/*.{ts,svelte}'],
 	ignoreDependencies: [
-		'@testing-library/jest-dom',
-		'@testing-library/svelte',
 		'@typescript-eslint/parser',
 		'@node-rs/argon2',
 		'tailwindcss',
+		'@vitest/browser-playwright',
+		'vitest-browser-svelte',
 	],
 };
 

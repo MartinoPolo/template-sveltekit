@@ -11,6 +11,7 @@ export default [
 			'node_modules',
 			'src/lib/paraglide',
 			'**/*.config.*',
+			'*.d.ts',
 		],
 	},
 	...tseslint.configs.recommended,
