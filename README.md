@@ -4,21 +4,21 @@ Production-ready SvelteKit template with authentication, i18n, database, and mod
 
 ## Stack
 
-| Layer         | Technology                                  |
-| ------------- | ------------------------------------------- |
-| Framework     | SvelteKit 2 + Svelte 5 (runes)              |
-| Build         | Vite 7 via Vite Plus                        |
-| Language      | TypeScript (strict mode)                    |
-| Styling       | Tailwind CSS 4                              |
-| Database      | PostgreSQL + Drizzle ORM (strict mode)      |
-| Auth          | BetterAuth (email/password, Google OAuth)   |
-| i18n          | Paraglide JS (en, cs)                       |
-| Testing       | Vitest + Playwright + Testing Library       |
-| Linting       | ESLint + Stylelint + OxLint (via Vite Plus) |
-| Formatting    | OxFormatter (via Vite Plus)                 |
-| Dead code     | Knip                                        |
-| Component dev | Storybook 10                                |
-| Deployment    | Cloudflare Pages                            |
+| Layer         | Technology                                |
+| ------------- | ----------------------------------------- |
+| Framework     | SvelteKit 2 + Svelte 5 (runes)            |
+| Build         | Vite 7                                    |
+| Language      | TypeScript (strict mode)                  |
+| Styling       | Tailwind CSS 4                            |
+| Database      | PostgreSQL + Drizzle ORM (strict mode)    |
+| Auth          | BetterAuth (email/password, Google OAuth) |
+| i18n          | Paraglide JS (en, cs)                     |
+| Testing       | Vitest + Playwright + Testing Library     |
+| Linting       | ESLint + Stylelint + OxLint               |
+| Formatting    | Prettier                                  |
+| Dead code     | Knip                                      |
+| Component dev | Storybook 10                              |
+| Deployment    | Cloudflare Pages                          |
 
 ## Getting Started
 
@@ -46,19 +46,20 @@ pnpm run dev
 
 | Script               | Description                          |
 | -------------------- | ------------------------------------ |
-| `pnpm run dev`       | Start dev server (`vp dev`)          |
-| `pnpm run build`     | Production build (`vp build`)        |
+| `pnpm run dev`       | Start dev server                     |
+| `pnpm run build`     | Production build                     |
 | `pnpm run preview`   | Preview via Cloudflare Pages locally |
 | `pnpm run storybook` | Start Storybook on port 6006         |
 
 ### Code Quality
 
-| Script               | Description                                                             |
-| -------------------- | ----------------------------------------------------------------------- |
-| `pnpm run lint`      | OxLint + ESLint (type-aware)                                            |
-| `pnpm run lint:css`  | Stylelint for CSS and Svelte                                            |
-| `pnpm run format`    | Format with OxFormatter                                                 |
-| `pnpm run check:all` | Full suite: lint + typecheck + eslint + stylelint + knip + svelte-check |
+| Script                 | Description                                                            |
+| ---------------------- | ---------------------------------------------------------------------- |
+| `pnpm run lint`        | OxLint                                                                 |
+| `pnpm run lint:eslint` | ESLint (type-aware)                                                    |
+| `pnpm run lint:css`    | Stylelint for CSS and Svelte                                           |
+| `pnpm run format`      | Format with Prettier                                                   |
+| `pnpm run check:all`   | Full suite: format + oxlint + stylelint + knip + svelte-check + eslint |
 
 ### Testing
 
@@ -144,11 +145,10 @@ Configured in `vite.config.ts` as `['url', 'cookie', 'baseLocale']`:
 
 ```svelte
 <script>
-  import * as m from '$lib/paraglide/messages';
+	import * as m from '$lib/paraglide/messages';
 </script>
 
-<h1>{m.welcome()}</h1>
-<p>{m.hello_world({ name: 'World' })}</p>
+<h1>{m.welcome()}</h1><p>{m.hello_world({ name: 'World' })}</p>
 ```
 
 ### Adding a locale
