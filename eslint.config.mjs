@@ -44,12 +44,12 @@ export default [
 				'warn',
 				{
 					selector: 'variableLike',
-					format: ['snake_case', 'PascalCase'],
+					format: ['camelCase', 'PascalCase'],
 					leadingUnderscore: 'allow',
 				},
 				{
 					selector: 'variable',
-					format: ['UPPER_CASE', 'snake_case', 'PascalCase'],
+					format: ['UPPER_CASE', 'camelCase', 'PascalCase'],
 					modifiers: ['global', 'const'],
 					leadingUnderscore: 'allow',
 				},
@@ -106,6 +106,7 @@ export default [
 	},
 	{
 		files: ['src/lib/**/*.svelte'],
+		ignores: ['src/lib/components/ui/**'],
 		plugins: { 'check-file': checkFile },
 		rules: {
 			'check-file/filename-naming-convention': ['error', { '**/*.svelte': 'PASCAL_CASE' }],
