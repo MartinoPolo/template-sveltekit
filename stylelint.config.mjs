@@ -5,5 +5,6 @@ export default {
 			true,
 			{ ignoreAtRules: ['custom-variant', 'theme', 'utility', 'plugin', 'source'] },
 		],
+		'import-notation': 'string',
 	},
 };
