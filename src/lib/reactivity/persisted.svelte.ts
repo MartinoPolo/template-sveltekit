@@ -8,7 +8,7 @@ interface Serde<T> {
 	deserialize: (value: string) => { success: true; data: T } | { success: false };
 }
 
-export function json_serde<T>(validate: (value: unknown) => value is T): Serde<T> {
+export function jsonSerde<T>(validate: (value: unknown) => value is T): Serde<T> {
 	return {
 		serialize: (value: T) => JSON.stringify(value),
 		deserialize: (raw: string) => {
@@ -28,7 +28,7 @@ export function json_serde<T>(validate: (value: unknown) => value is T): Serde<T
 interface PersistedOptions<T> {
 	key: string;
 	serde: Serde<T>;
-	default_value: NoInfer<T>;
+	defaultValue: NoInfer<T>;
 }
 
 /**
@@ -36,14 +36,14 @@ interface PersistedOptions<T> {
  */
 export class Persisted<T> implements MutableState<T> {
 	#key;
-	#default_value;
+	#defaultValue;
 	#subscribe;
 	#update: (() => void) | undefined = undefined;
 	#serde: Serde<T>;
 
-	constructor({ key, serde, default_value }: PersistedOptions<T>) {
+	constructor({ key, serde, defaultValue }: PersistedOptions<T>) {
 		this.#key = key;
-		this.#default_value = default_value;
+		this.#defaultValue = defaultValue;
 		this.#serde = serde;
 
 		if (!browser) {
@@ -64,34 +64,34 @@ export class Persisted<T> implements MutableState<T> {
 		});
 	}
 
-	#set_to_storage(value: T) {
+	#setToStorage(value: T) {
 		localStorage.setItem(this.#key, this.#serde.serialize(value));
 	}
 
 	get current(): T {
 		if (!browser) {
-			return this.#default_value;
+			return this.#defaultValue;
 		}
 		this.#subscribe?.();
 		const val = localStorage.getItem(this.#key);
 		if (val == null) {
-			return this.#default_value;
+			return this.#defaultValue;
 		}
 		const parsed = this.#serde.deserialize(val);
 		if (!parsed.success) {
-			this.#set_to_storage(this.#default_value);
-			return this.#default_value;
+			this.#setToStorage(this.#defaultValue);
+			return this.#defaultValue;
 		}
 		return parsed.data;
 	}
 
-	set current(new_value: T) {
-		this.#set_to_storage(new_value);
+	set current(newValue: T) {
+		this.#setToStorage(newValue);
 		this.#update?.();
 	}
 
-	set_default_value(): void {
-		this.#set_to_storage(this.#default_value);
+	setDefaultValue(): void {
+		this.#setToStorage(this.#defaultValue);
 		this.#update?.();
 	}
 

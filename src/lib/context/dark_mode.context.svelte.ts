@@ -1,6 +1,6 @@
 import { browser } from '$app/environment';
 import { Derived } from '$lib/reactivity/derived.svelte';
-import { json_serde, Persisted } from '$lib/reactivity/persisted.svelte';
+import { jsonSerde, Persisted } from '$lib/reactivity/persisted.svelte';
 import { getContext, setContext } from 'svelte';
 import { MediaQuery } from 'svelte/reactivity';
 import { CONTEXT_KEYS } from './context_key';
@@ -9,56 +9,56 @@ export type DarkModeSetting = 'dark' | 'light' | 'system';
 
 const DARK_MODE_VALUES: ReadonlyArray<string> = ['dark', 'light', 'system'];
 
-function is_dark_mode_setting(value: unknown): value is DarkModeSetting {
+function isDarkModeSetting(value: unknown): value is DarkModeSetting {
 	return typeof value === 'string' && DARK_MODE_VALUES.includes(value);
 }
 
-function update_dom_class(is_dark: boolean) {
+function updateDomClass(isDark: boolean) {
 	if (!browser) {
 		return;
 	}
 	const root = document.documentElement;
-	if (is_dark) {
+	if (isDark) {
 		root.classList.add('dark');
 	} else {
 		root.classList.remove('dark');
 	}
 }
 
-function create_dark_mode_context() {
-	const dark_mode_setting = new Persisted<DarkModeSetting>({
+function createDarkModeContext() {
+	const darkModeSetting = new Persisted<DarkModeSetting>({
 		key: 'dark_mode',
-		serde: json_serde(is_dark_mode_setting),
-		default_value: 'system',
+		serde: jsonSerde(isDarkModeSetting),
+		defaultValue: 'system',
 	});
 
-	const prefers_dark_mode = new MediaQuery('(prefers-color-scheme: dark)');
+	const prefersDarkMode = new MediaQuery('(prefers-color-scheme: dark)');
 
-	const is_dark_mode = new Derived(() => {
-		if (dark_mode_setting.current === 'system') {
-			return prefers_dark_mode.current;
+	const isDarkMode = new Derived(() => {
+		if (darkModeSetting.current === 'system') {
+			return prefersDarkMode.current;
 		}
-		return dark_mode_setting.current === 'dark';
+		return darkModeSetting.current === 'dark';
 	});
 
 	$effect.pre(() => {
-		update_dom_class(is_dark_mode.current);
+		updateDomClass(isDarkMode.current);
 	});
 
 	return {
-		dark_mode_setting,
-		is_dark_mode,
+		darkModeSetting,
+		isDarkMode,
 	};
 }
 
-export type DarkModeContext = ReturnType<typeof create_dark_mode_context>;
+export type DarkModeContext = ReturnType<typeof createDarkModeContext>;
 
-export function set_dark_mode_context() {
-	const context = create_dark_mode_context();
+export function setDarkModeContext() {
+	const context = createDarkModeContext();
 	setContext(CONTEXT_KEYS.dark_mode, context);
 	return context;
 }
 
-export function use_dark_mode() {
+export function useDarkMode() {
 	return getContext<DarkModeContext>(CONTEXT_KEYS.dark_mode);
 }

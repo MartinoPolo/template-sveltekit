@@ -10,32 +10,32 @@ export interface ReadableState<T> {
 }
 
 export interface StateUpdateOptions<T> {
-	is_equal?: (previous_value: NoInfer<T>, new_value: NoInfer<T>) => boolean;
+	isEqual?: (previousValue: NoInfer<T>, newValue: NoInfer<T>) => boolean;
 	transform?: (value: NoInfer<T>) => NoInfer<T>;
 }
 
 export class StateRaw<T> implements MutableState<T> {
 	#current: T;
-	#is_equal?: (previous_value: T, new_value: T) => boolean;
+	#isEqual?: (previousValue: T, newValue: T) => boolean;
 	#transform: (value: T) => T;
 
-	constructor(initial_value: T, mutate_options?: StateUpdateOptions<T>) {
-		this.#current = $state.raw(initial_value);
-		this.#is_equal = mutate_options?.is_equal;
-		this.#transform = mutate_options?.transform ?? ((value) => value);
+	constructor(initialValue: T, mutateOptions?: StateUpdateOptions<T>) {
+		this.#current = $state.raw(initialValue);
+		this.#isEqual = mutateOptions?.isEqual;
+		this.#transform = mutateOptions?.transform ?? ((value) => value);
 	}
 
 	get current() {
 		return this.#current;
 	}
 
-	set current(new_value: T) {
-		const old_value = untrack(() => this.#current);
-		const new_value_transformed = this.#transform(new_value);
-		if (this.#is_equal?.(old_value, new_value_transformed) === true) {
+	set current(newValue: T) {
+		const oldValue = untrack(() => this.#current);
+		const newValueTransformed = this.#transform(newValue);
+		if (this.#isEqual?.(oldValue, newValueTransformed) === true) {
 			return;
 		}
-		this.#current = new_value_transformed;
+		this.#current = newValueTransformed;
 	}
 
 	readonly() {
@@ -70,7 +70,7 @@ export class ProtectedState<T> implements ReadableState<T> {
 		return this.#state.current;
 	}
 
-	set_unprotected(value: T) {
+	setUnprotected(value: T) {
 		this.#state.current = value;
 	}
 }
