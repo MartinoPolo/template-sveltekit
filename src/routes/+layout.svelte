@@ -1,11 +1,14 @@
 <script lang="ts">
 	import '../app.css';
 	import { ModeWatcher } from 'mode-watcher';
+	import { setShowcaseFormContext } from '$lib/context/showcase_form.context.svelte';
 	import favicon from '$lib/assets/favicon.svg';
 	import figtreeLatinUrl from '@fontsource-variable/figtree/files/figtree-latin-wght-normal.woff2?url';
 	import notoSansLatinUrl from '@fontsource-variable/noto-sans/files/noto-sans-latin-wght-normal.woff2?url';
 
 	let { children } = $props();
+
+	setShowcaseFormContext();
 </script>
 
 <ModeWatcher />

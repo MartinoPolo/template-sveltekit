@@ -1,5 +1,7 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
 	import DarkModeToggle from '$lib/components/DarkModeToggle.svelte';
+	import { useShowcaseForm, type Interests } from '$lib/context/showcase_form.context.svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
 	import { Textarea } from '$lib/components/ui/textarea/index.js';
@@ -10,12 +12,15 @@
 	import { Separator } from '$lib/components/ui/separator/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import * as Select from '$lib/components/ui/select/index.js';
+	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
 	import * as Alert from '$lib/components/ui/alert/index.js';
 	import CircleCheck from '@lucide/svelte/icons/circle-check';
 	import TriangleAlert from '@lucide/svelte/icons/triangle-alert';
 	import Info from '@lucide/svelte/icons/info';
 	import Mail from '@lucide/svelte/icons/mail';
 	import Loader from '@lucide/svelte/icons/loader';
+
+	const { framework, role, interests, selectionCount } = useShowcaseForm();
 
 	const frameworks = [
 		{ value: 'sveltekit', label: 'SvelteKit' },
@@ -30,13 +35,22 @@
 		{ value: 'viewer', label: 'Viewer' },
 	] as const;
 
-	let frameworkValue = $state('');
-	let roleValue = $state('');
-
 	const frameworkLabel = $derived(
-		frameworks.find((f) => f.value === frameworkValue)?.label ?? 'Select a framework',
+		browser
+			? (frameworks.find((f) => f.value === framework.current)?.label ?? 'Select a framework')
+			: '\u00A0',
 	);
-	const roleLabel = $derived(roles.find((r) => r.value === roleValue)?.label ?? 'Select a role');
+	const roleLabel = $derived(
+		browser
+			? (roles.find((r) => r.value === role.current)?.label ?? 'Select a role')
+			: '\u00A0',
+	);
+
+	// Checkbox helpers — update interest immutably
+	function toggleInterest(key: keyof Interests) {
+		const prev = interests.current;
+		interests.current = { ...prev, [key]: !prev[key] };
+	}
 </script>
 
 <main class="min-h-screen bg-background text-foreground">
@@ -55,6 +69,9 @@
 			<p class="text-muted-foreground text-lg">
 				shadcn-svelte components with a green theme, light &amp; dark mode support.
 			</p>
+			<Badge variant="secondary" class={selectionCount.current > 0 ? '' : 'invisible'}>
+				{selectionCount.current} selection{selectionCount.current === 1 ? '' : 's'} made
+			</Badge>
 		</section>
 
 		<Separator />
@@ -138,33 +155,53 @@
 					<Card.Content class="space-y-6">
 						<div class="space-y-2">
 							<Label>Framework</Label>
-							<Select.Root type="single" bind:value={frameworkValue}>
-								<Select.Trigger class="w-full">
-									{frameworkLabel}
-								</Select.Trigger>
-								<Select.Content>
-									{#each frameworks as fw (fw.value)}
-										<Select.Item value={fw.value} label={fw.label}>
-											{fw.label}
-										</Select.Item>
-									{/each}
-								</Select.Content>
-							</Select.Root>
+							{#if browser}
+								<Select.Root
+									type="single"
+									value={framework.current}
+									onValueChange={(v) => {
+										framework.current = v as typeof framework.current;
+									}}
+								>
+									<Select.Trigger class="w-full">
+										{frameworkLabel}
+									</Select.Trigger>
+									<Select.Content>
+										{#each frameworks as fw (fw.value)}
+											<Select.Item value={fw.value} label={fw.label}>
+												{fw.label}
+											</Select.Item>
+										{/each}
+									</Select.Content>
+								</Select.Root>
+							{:else}
+								<Skeleton class="h-9 w-full rounded-md" />
+							{/if}
 						</div>
 						<div class="space-y-2">
 							<Label>Role</Label>
-							<Select.Root type="single" bind:value={roleValue}>
-								<Select.Trigger class="w-full">
-									{roleLabel}
-								</Select.Trigger>
-								<Select.Content>
-									{#each roles as role (role.value)}
-										<Select.Item value={role.value} label={role.label}>
-											{role.label}
-										</Select.Item>
-									{/each}
-								</Select.Content>
-							</Select.Root>
+							{#if browser}
+								<Select.Root
+									type="single"
+									value={role.current}
+									onValueChange={(v) => {
+										role.current = v as typeof role.current;
+									}}
+								>
+									<Select.Trigger class="w-full">
+										{roleLabel}
+									</Select.Trigger>
+									<Select.Content>
+										{#each roles as role (role.value)}
+											<Select.Item value={role.value} label={role.label}>
+												{role.label}
+											</Select.Item>
+										{/each}
+									</Select.Content>
+								</Select.Root>
+							{:else}
+								<Skeleton class="h-9 w-full rounded-md" />
+							{/if}
 						</div>
 						<Separator />
 						<div class="flex items-center justify-between">
@@ -179,15 +216,27 @@
 						<div class="flex flex-col gap-3">
 							<span class="text-sm font-medium">Interests</span>
 							<div class="flex items-center gap-2">
-								<Checkbox id="frontend" />
+								<Checkbox
+									id="frontend"
+									checked={interests.current.frontend}
+									onCheckedChange={() => toggleInterest('frontend')}
+								/>
 								<Label for="frontend" class="font-normal">Frontend</Label>
 							</div>
 							<div class="flex items-center gap-2">
-								<Checkbox id="backend" />
+								<Checkbox
+									id="backend"
+									checked={interests.current.backend}
+									onCheckedChange={() => toggleInterest('backend')}
+								/>
 								<Label for="backend" class="font-normal">Backend</Label>
 							</div>
 							<div class="flex items-center gap-2">
-								<Checkbox id="devops" />
+								<Checkbox
+									id="devops"
+									checked={interests.current.devops}
+									onCheckedChange={() => toggleInterest('devops')}
+								/>
 								<Label for="devops" class="font-normal">DevOps</Label>
 							</div>
 						</div>
