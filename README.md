@@ -10,6 +10,8 @@ Production-ready SvelteKit template with authentication, i18n, database, and mod
 | Build         | Vite 7                                    |
 | Language      | TypeScript (strict mode)                  |
 | Styling       | Tailwind CSS 4                            |
+| UI Components | shadcn-svelte (green theme)               |
+| Theme         | mode-watcher (light / dark / system)      |
 | Database      | PostgreSQL + Drizzle ORM (strict mode)    |
 | Auth          | BetterAuth (email/password, Google OAuth) |
 | i18n          | Paraglide JS (en, cs)                     |
@@ -186,6 +188,49 @@ Type-safe client-server RPC. Functions defined with the remote function API run 
 ### Async Components
 
 Use `await` directly in Svelte components without `{#await}` blocks. Enabled via `compilerOptions.experimental.async` in `svelte.config.js`.
+
+## UI Components (shadcn-svelte)
+
+Pre-configured [shadcn-svelte](https://next.shadcn-svelte.com/) component library with a green theme. Available components: Button, Card, Input, Textarea, Label, Checkbox, Select, Switch, Badge, Alert, Separator, and Skeleton.
+
+Components live in `src/lib/components/ui/`. Use the `cn()` utility from `$lib/utils` for conditional class merging.
+
+## Dark Mode
+
+Theme toggling powered by [mode-watcher](https://github.com/svecosystem/mode-watcher) with three modes: light, dark, and system.
+
+The `DarkModeToggle` component cycles through modes on click. A flash-prevention script in `app.html` ensures no FOUC on page load.
+
+## Font Optimization
+
+Two variable fonts loaded via inline `@font-face` declarations:
+
+| Font               | Usage    |
+| ------------------ | -------- |
+| Figtree Variable   | Headings |
+| Noto Sans Variable | Body     |
+
+Both fonts include `latin` and `latin-ext` subsets. Metric-adjusted Arial fallback fonts prevent CLS (Cumulative Layout Shift). Fonts are preloaded via `<link rel="preload">` in server hooks.
+
+## Reactivity Utilities
+
+Reusable reactive primitives in `src/lib/reactivity/`:
+
+| Class          | Description                                                               |
+| -------------- | ------------------------------------------------------------------------- |
+| `StateRaw<T>`  | Simple reactive wrapper around `$state.raw`                               |
+| `Derived<T>`   | Reactive derived value using `$derived.by`                                |
+| `Persisted<T>` | Reactive state persisted to `localStorage` with JSON serde and type guard |
+
+`Persisted<T>` accepts a key, default value, and a type guard function. It reads from `localStorage` on init and writes back on every change.
+
+## Context Pattern
+
+Type-safe Svelte context using `setContext` / `getContext`. Context keys are centralized in `src/lib/context/context_key.ts`.
+
+Each context module exports a `set` function (called in the parent layout) and a `get` function (called in child components). See `src/lib/context/showcase_form.context.svelte.ts` for a working example that combines `Persisted`, `StateRaw`, and `Derived`.
+
+For SSR of persisted values, use Skeleton placeholders to avoid hydration mismatches.
 
 ## Storybook
 
