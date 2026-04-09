@@ -176,7 +176,7 @@
 							<Switch id="marketing" />
 						</div>
 						<Separator />
-						<div class="space-y-3">
+						<div class="flex flex-col gap-3">
 							<span class="text-sm font-medium">Interests</span>
 							<div class="flex items-center gap-2">
 								<Checkbox id="frontend" />
