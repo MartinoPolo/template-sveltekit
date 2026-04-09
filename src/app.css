@@ -113,6 +113,7 @@
 	--color-sidebar-ring: var(--sidebar-ring);
 	--font-sans: 'Figtree Variable', sans-serif;
 	--font-heading: 'Noto Sans Variable', sans-serif;
+	--default-transition-duration: 75ms;
 	--radius-2xl: calc(var(--radius) * 1.8);
 	--radius-3xl: calc(var(--radius) * 2.2);
 	--radius-4xl: calc(var(--radius) * 2.6);
