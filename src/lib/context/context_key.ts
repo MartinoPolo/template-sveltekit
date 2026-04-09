@@ -1,3 +1,3 @@
 export const CONTEXT_KEYS = {
-	dark_mode: 'dark_mode',
+	showcase_form: 'showcase_form',
 } as const;

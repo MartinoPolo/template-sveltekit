@@ -1,12 +1,12 @@
 <script lang="ts">
 	import '../app.css';
-	import { setDarkModeContext } from '$lib/context/dark_mode.context.svelte';
+	import { ModeWatcher } from 'mode-watcher';
 	import favicon from '$lib/assets/favicon.svg';
 
 	let { children } = $props();
-
-	setDarkModeContext();
 </script>
+
+<ModeWatcher />
 
 <svelte:head>
 	<link rel="icon" href={favicon} />

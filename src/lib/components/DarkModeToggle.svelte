@@ -1,30 +1,29 @@
 <script lang="ts">
-	import { useDarkMode, type DarkModeSetting } from '$lib/context/dark_mode.context.svelte';
+	import { userPrefersMode, setMode } from 'mode-watcher';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import Moon from '@lucide/svelte/icons/moon';
 	import Monitor from '@lucide/svelte/icons/monitor';
 	import Sun from '@lucide/svelte/icons/sun';
 
-	const { darkModeSetting } = useDarkMode();
+	const MODES = ['light', 'system', 'dark'] as const;
+	type Mode = (typeof MODES)[number];
 
-	const SETTINGS: DarkModeSetting[] = ['light', 'system', 'dark'];
-
-	function toggleMode() {
-		const currentIndex = SETTINGS.indexOf(darkModeSetting.current);
-		const nextIndex = (currentIndex + 1) % SETTINGS.length;
-		darkModeSetting.current = SETTINGS[nextIndex];
+	function cycleMode() {
+		const current: Mode = userPrefersMode.current as Mode;
+		const next = MODES[(MODES.indexOf(current) + 1) % MODES.length];
+		setMode(next);
 	}
 </script>
 
 <Button
-	onclick={toggleMode}
+	onclick={cycleMode}
 	variant="outline"
 	size="icon"
-	aria-label={`Toggle theme (${darkModeSetting.current})`}
+	aria-label={`Toggle theme (${userPrefersMode.current})`}
 >
-	{#if darkModeSetting.current === 'light'}
+	{#if userPrefersMode.current === 'light'}
 		<Sun size={16} />
-	{:else if darkModeSetting.current === 'dark'}
+	{:else if userPrefersMode.current === 'dark'}
 		<Moon size={16} />
 	{:else}
 		<Monitor size={16} />
