@@ -191,14 +191,25 @@ Use `await` directly in Svelte components without `{#await}` blocks. Enabled via
 
 ## UI Components (shadcn-svelte)
 
-Pre-configured [shadcn-svelte](https://next.shadcn-svelte.com/) component library with a green theme. Available components: Button, Card, Input, Textarea, Label, Checkbox, Select, Switch, Badge, Alert, Separator, and Skeleton.
-
+Pre-configured [shadcn-svelte](https://next.shadcn-svelte.com/) component library with a green theme.
 Components live in `src/lib/components/ui/`. Use the `cn()` utility from `$lib/utils` for conditional class merging.
+
+### Component Architecture
+
+Components follow a two-tier structure:
+
+| Tier           | Directory                      | Naming                                    | Purpose                                                                   |
+| -------------- | ------------------------------ | ----------------------------------------- | ------------------------------------------------------------------------- |
+| **Primitives** | `src/lib/components/ui/`       | kebab-case files, dual PascalCase exports | CLI-managed shadcn-svelte components — do not edit directly               |
+| **Composed**   | `src/lib/components/composed/` | PascalCase files                          | App-level composites that reduce nesting by combining multiple primitives |
+
+Composed components use descriptive PascalCase names that avoid collisions with the `ui/` namespace (e.g. `LabeledSelect` instead of `Select`, `SectionCard` instead of `Card`). Inside composed components, import `ui/` primitives with their standard namespace import (`import * as Select from '$lib/components/ui/select/index.js'`).
+
+Standalone components that don't compose multiple primitives (like `DarkModeToggle`) stay at the `src/lib/components/` root.
 
 ## Dark Mode
 
 Theme toggling powered by [mode-watcher](https://github.com/svecosystem/mode-watcher) with three modes: light, dark, and system.
-
 The `DarkModeToggle` component cycles through modes on click. A flash-prevention script in `app.html` ensures no FOUC on page load.
 
 ## Font Optimization
