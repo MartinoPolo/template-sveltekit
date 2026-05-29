@@ -1,10 +1,8 @@
 import type { Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
-import { auth } from '$lib/server/auth.js';
 import { paraglideMiddleware } from '$lib/paraglide/server';
 import { getTextDirection } from '$lib/paraglide/runtime';
-import { svelteKitHandler } from 'better-auth/svelte-kit';
-import { building } from '$app/environment';
+import { isDatabaseConfigured } from '$lib/server/db/index.js';
 
 const paraglideHandle: Handle = ({ event, resolve }) =>
 	paraglideMiddleware(event.request, ({ request: localizedRequest, locale }) => {
@@ -19,6 +17,10 @@ const paraglideHandle: Handle = ({ event, resolve }) =>
 	});
 
 const authHandle: Handle = async ({ event, resolve }) => {
+	const { auth } = await import('$lib/server/auth.js');
+	const { svelteKitHandler } = await import('better-auth/svelte-kit');
+	const { building } = await import('$app/environment');
+
 	const sessionData = await auth.api.getSession({ headers: event.request.headers });
 
 	if (sessionData) {
@@ -29,4 +31,9 @@ const authHandle: Handle = async ({ event, resolve }) => {
 	return svelteKitHandler({ event, resolve, auth, building });
 };
 
-export const handle = sequence(paraglideHandle, authHandle);
+const handles: Handle[] = [paraglideHandle];
+if (isDatabaseConfigured()) {
+	handles.push(authHandle);
+}
+
+export const handle = sequence(...handles);
