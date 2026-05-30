@@ -15,7 +15,8 @@ export default [
 			'node_modules',
 			'src/lib/paraglide',
 			'**/*.config.*',
-			'*.d.ts',
+			'**/*.d.ts',
+			'scripts/**',
 		],
 	},
 	...tseslint.configs.recommended,
@@ -106,7 +107,7 @@ export default [
 	},
 	{
 		files: ['src/lib/**/*.svelte'],
-		ignores: ['src/lib/components/ui/**'],
+		ignores: ['src/lib/components/base/**'],
 		plugins: { 'check-file': checkFile },
 		rules: {
 			'check-file/filename-naming-convention': ['error', { '**/*.svelte': 'PASCAL_CASE' }],
