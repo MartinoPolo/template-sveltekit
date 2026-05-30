@@ -21,7 +21,7 @@ execSync('pnpm exec svelte-kit sync', { stdio: 'ignore' });
 const commands = [
 	{ name: 'fallow', cmd: 'pnpm check:fallow' },
 	{ name: 'typecheck', cmd: 'pnpm exec svelte-check --tsconfig ./tsconfig.json' },
-	{ name: 'eslint', cmd: 'pnpm exec eslint --cache .' },
+	{ name: 'eslint', cmd: 'pnpm exec eslint .' },
 	{ name: 'vitest', cmd: 'pnpm test run --project client --project server' },
 ];
 
