@@ -16,8 +16,8 @@ declare global {
 		// interface PageState {}
 		interface Platform {
 			env: {
-				HYPERDRIVE: Hyperdrive;
-				R2: R2Bucket;
+				HYPERDRIVE?: Hyperdrive;
+				R2?: R2Bucket;
 				ASSETS: Fetcher;
 			};
 			ctx: ExecutionContext;
