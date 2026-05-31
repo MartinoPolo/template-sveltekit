@@ -341,8 +341,8 @@
 	{#snippet template()}
 		<div class="max-w-xs">
 			<Label>Produce</Label>
-			<Select.Root type="single" bind:value={selectedDefault}>
-				<Select.Trigger class="w-48">{selectedDefaultLabel}</Select.Trigger>
+			<Select.Root type="single" bind:value={selectedGroups}>
+				<Select.Trigger class="w-48">{selectedGroupsLabel}</Select.Trigger>
 				<Select.Content portalProps={{ disabled: true }}>
 					<Select.Group>
 						<Select.GroupHeading>Fruits</Select.GroupHeading>
