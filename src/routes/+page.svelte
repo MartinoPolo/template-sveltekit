@@ -53,7 +53,7 @@
 			<p class="text-muted-foreground text-lg">
 				shadcn-svelte components with a green theme, light &amp; dark mode support.
 			</p>
-			<Badge variant="secondary" class={selectionCount.current > 0 ? '' : 'invisible'}>
+			<Badge tone="neutral" class={selectionCount.current > 0 ? '' : 'invisible'}>
 				{selectionCount.current} selection{selectionCount.current === 1 ? '' : 's'} made
 			</Badge>
 		</section>
@@ -65,15 +65,15 @@
 			<h3 class="text-2xl font-semibold tracking-tight">Buttons</h3>
 			<div class="flex flex-wrap items-center gap-3">
 				<Button>Default</Button>
-				<Button variant="secondary">Secondary</Button>
-				<Button variant="outline">Outline</Button>
-				<Button variant="ghost">Ghost</Button>
-				<Button variant="link">Link</Button>
-				<Button variant="destructive">Destructive</Button>
+				<Button intent="secondary">Secondary</Button>
+				<Button intent="outline">Outline</Button>
+				<Button intent="ghost">Ghost</Button>
+				<Button intent="link">Link</Button>
+				<Button intent="primary-destructive">Destructive</Button>
 			</div>
 			<div class="flex flex-wrap items-center gap-3">
 				<Button size="sm">Small</Button>
-				<Button size="default">Default</Button>
+				<Button size="md">Default</Button>
 				<Button size="lg">Large</Button>
 				<Button size="icon" aria-label="Send email"><Mail size={16} /></Button>
 			</div>
@@ -93,9 +93,9 @@
 			<h3 class="text-2xl font-semibold tracking-tight">Badges</h3>
 			<div class="flex flex-wrap items-center gap-3">
 				<Badge>Default</Badge>
-				<Badge variant="secondary">Secondary</Badge>
-				<Badge variant="outline">Outline</Badge>
-				<Badge variant="destructive">Destructive</Badge>
+				<Badge tone="neutral">Secondary</Badge>
+				<Badge badgeStyle="outlined">Outline</Badge>
+				<Badge tone="danger">Destructive</Badge>
 			</div>
 		</section>
 

@@ -1,51 +1,65 @@
-<script lang="ts" module>
-	import { type VariantProps, tv } from 'tailwind-variants';
-
-	export const badgeVariants = tv({
-		base: 'h-5 gap-1 rounded-4xl border border-transparent px-2 py-0.5 text-xs font-medium transition-all has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&>svg]:size-3! focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive group/badge inline-flex w-fit shrink-0 items-center justify-center overflow-hidden whitespace-nowrap transition-colors focus-visible:ring-[3px] [&>svg]:pointer-events-none',
-		variants: {
-			variant: {
-				default: 'bg-primary text-primary-foreground [a]:hover:bg-primary/80',
-				secondary: 'bg-secondary text-secondary-foreground [a]:hover:bg-secondary/80',
-				destructive:
-					'bg-destructive/10 [a]:hover:bg-destructive/20 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 text-destructive dark:bg-destructive/20',
-				outline:
-					'border-border text-foreground [a]:hover:bg-muted [a]:hover:text-muted-foreground',
-				ghost: 'hover:bg-muted hover:text-muted-foreground dark:hover:bg-muted/50',
-				link: 'text-primary underline-offset-4 hover:underline',
-			},
-		},
-		defaultVariants: {
-			variant: 'default',
-		},
-	});
-
-	export type BadgeVariant = VariantProps<typeof badgeVariants>['variant'];
-</script>
-
 <script lang="ts">
-	import type { HTMLAnchorAttributes } from 'svelte/elements';
-	import { cn, type WithElementRef } from '$lib/utils.js';
+	import { cn } from '$lib/utils.js';
+	import { badgeVariants, type BadgeProps } from './badge_variants.js';
 
 	let {
-		ref = $bindable(null),
-		href,
 		class: className,
-		variant = 'default',
+		tone = 'neutral',
+		badgeStyle = 'outlined',
+		format = 'default',
+		size = 'default',
+		collapsed = false,
+		dot,
+		icon,
+		ref = $bindable(null),
 		children,
 		...restProps
-	}: WithElementRef<HTMLAnchorAttributes> & {
-		variant?: BadgeVariant;
-	} = $props();
+	}: BadgeProps = $props();
+
+	const BADGE_TRANSITION = [
+		'padding 200ms linear',
+		'gap 200ms linear',
+		'background-color 150ms ease-in-out',
+		'color 150ms ease-in-out',
+		'border-color 150ms ease-in-out',
+	].join(', ');
+
+	const TEXT_TRANSITION = ['opacity 150ms ease-in-out', 'max-width 200ms ease-in-out'].join(', ');
 </script>
 
-<svelte:element
-	this={href != null && href !== '' ? 'a' : 'span'}
+<span
 	bind:this={ref}
 	data-slot="badge"
-	{href}
-	class={cn(badgeVariants({ variant }), className)}
+	class={cn(
+		badgeVariants({ tone, badgeStyle, format, size }),
+		collapsed && 'min-w-5 px-1 gap-0 rounded-full',
+		className,
+	)}
+	style:transition={BADGE_TRANSITION}
 	{...restProps}
 >
-	{@render children?.()}
-</svelte:element>
+	{#if icon}
+		<span data-badge-icon class="inline-flex shrink-0">
+			{@render icon()}
+		</span>
+	{/if}
+	{#if dot}
+		<span
+			class={cn(
+				'size-1.5 shrink-0 rounded-full bg-current',
+				dot === 'pulsing' && 'animate-badge-pulse',
+			)}
+		></span>
+	{/if}
+	{#if children}
+		<span
+			data-badge-text
+			class="inline-flex overflow-hidden whitespace-nowrap"
+			style:opacity={collapsed ? '0' : '1'}
+			style:max-width={collapsed ? '0px' : '200px'}
+			style:transition={TEXT_TRANSITION}
+		>
+			{@render children()}
+		</span>
+	{/if}
+</span>
