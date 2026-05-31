@@ -36,7 +36,8 @@
 		"better-auth": "~1.4.22",
 		"drizzle-orm": "^0.45.1",
 		"mode-watcher": "^1.1.0",
-		"postgres": "^3.4.8"
+		"postgres": "^3.4.8",
+		"svelte-sonner": "^1.1.1"
 	},
 	"devDependencies": {
 		"@better-auth/cli": "~1.4.22",
