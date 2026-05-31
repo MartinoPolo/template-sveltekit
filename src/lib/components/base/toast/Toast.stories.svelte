@@ -1,6 +1,16 @@
 <script module lang="ts">
 	import { defineMeta } from '@storybook/addon-svelte-csf';
-	import { TOAST_TONES, Toast } from './index.js';
+	import {
+		TOAST_TONES,
+		Toast,
+		AppToaster,
+		showToast,
+		toastSuccess,
+		toastError,
+		toastWarning,
+		toastInfo,
+		toastLoading,
+	} from './index.js';
 	import RefreshIcon from '@lucide/svelte/icons/refresh-cw';
 	import CheckIcon from '@lucide/svelte/icons/check';
 	import AlertTriangleIcon from '@lucide/svelte/icons/triangle-alert';
@@ -159,6 +169,62 @@
 			<Toast tone="loading" title="Generating invite…" body="Creating shareable link.">
 				{#snippet icon()}<RefreshIcon class="size-3.5 animate-spin" />{/snippet}
 			</Toast>
+		</div>
+	{/snippet}
+</Story>
+
+<Story name="Sonner Integration">
+	{#snippet template()}
+		<AppToaster />
+		<div class="flex flex-wrap gap-2">
+			<Button
+				intent="secondary"
+				size="sm"
+				onclick={() => toastInfo('Info toast', 'This is an info message.')}
+			>
+				Info
+			</Button>
+			<Button
+				intent="secondary"
+				size="sm"
+				onclick={() => toastSuccess('Success!', 'Operation completed.')}
+			>
+				Success
+			</Button>
+			<Button
+				intent="secondary"
+				size="sm"
+				onclick={() => toastWarning('Warning', 'Something needs attention.')}
+			>
+				Warning
+			</Button>
+			<Button
+				intent="secondary"
+				size="sm"
+				onclick={() => toastError('Error', 'Something went wrong.')}
+			>
+				Error
+			</Button>
+			<Button
+				intent="secondary"
+				size="sm"
+				onclick={() => toastLoading('Loading…', 'Please wait.')}
+			>
+				Loading
+			</Button>
+			<Button
+				intent="secondary"
+				size="sm"
+				onclick={() =>
+					showToast({
+						tone: 'success',
+						title: 'Custom',
+						body: 'Via showToast() directly.',
+						dismissible: true,
+					})}
+			>
+				Custom (showToast)
+			</Button>
 		</div>
 	{/snippet}
 </Story>

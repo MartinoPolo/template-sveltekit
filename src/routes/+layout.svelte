@@ -1,6 +1,7 @@
 <script lang="ts">
 	import '../app.css';
 	import { ModeWatcher } from 'mode-watcher';
+	import { AppToaster } from '$lib/components/base/toast/index.js';
 	import { setShowcaseFormContext } from '$lib/context/showcase_form.context.svelte';
 	import favicon from '$lib/assets/favicon.svg';
 	import figtreeLatinUrl from '@fontsource-variable/figtree/files/figtree-latin-wght-normal.woff2?url';
@@ -32,6 +33,7 @@
 </script>
 
 <ModeWatcher />
+<AppToaster />
 
 <svelte:head>
 	<link rel="icon" href={favicon} />
