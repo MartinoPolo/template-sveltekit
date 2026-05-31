@@ -270,10 +270,14 @@
 	--sidebar-border: oklch(100% 0 0deg / 10%);
 	--sidebar-ring: oklch(58% 0.031 107.3deg);
 
-	/* Surface hierarchy (dark) */
+	/* Surface hierarchy (dark) — must re-declare var() refs so they resolve against dark values */
+	--surface: var(--background);
+	--surface-2: var(--secondary);
+	--surface-3: var(--muted);
 	--surface-hover: color-mix(in oklch, var(--foreground) 8%, transparent);
 
 	/* Text hierarchy (dark) */
+	--foreground-muted: var(--muted-foreground);
 	--foreground-subtle: oklch(55% 0.012 107deg);
 
 	/* Border (dark) */
@@ -360,30 +364,6 @@
 
 	--animate-accordion-down: accordion-down 0.2s ease-out;
 	--animate-accordion-up: accordion-up 0.2s ease-out;
-
-	@keyframes shimmer {
-		0% {
-			background-position: 200% 0;
-		}
-
-		100% {
-			background-position: -200% 0;
-		}
-	}
-
-	@keyframes badge-pulse {
-		0%,
-		100% {
-			opacity: 1;
-		}
-
-		50% {
-			opacity: 0.4;
-		}
-	}
-
-	--animate-shimmer: shimmer 2s ease-in-out infinite;
-	--animate-badge-pulse: badge-pulse 1.5s ease-in-out infinite;
 }
 
 @theme {
