@@ -107,6 +107,8 @@ export default defineConfig({
 				test: {
 					name: 'storybook',
 					sequence: { groupOrder: 2 },
+					fileParallelism: false,
+					maxConcurrency: 1,
 					browser: {
 						enabled: true,
 						headless: true,

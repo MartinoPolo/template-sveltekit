@@ -18,6 +18,10 @@
 		return canvasElement.querySelector('[data-slot="select-trigger"]') as HTMLElement;
 	}
 
+	async function expectDropdownClosed(trigger: HTMLElement): Promise<void> {
+		await waitFor(() => expect(trigger).toHaveAttribute('aria-expanded', 'false'));
+	}
+
 	const playOpenDropdown = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
 		const trigger = getSelectTrigger(canvasElement);
 		await expect(trigger).toHaveAttribute('aria-expanded', 'false');
@@ -25,6 +29,8 @@
 		await expect(trigger).toHaveAttribute('aria-expanded', 'true');
 		const listbox = document.querySelector('[role="listbox"]');
 		await expect(listbox).toBeInTheDocument();
+		await userEvent.keyboard('{Escape}');
+		await expectDropdownClosed(trigger);
 	};
 
 	const playSelectOption = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
@@ -34,7 +40,7 @@
 		const listbox = document.querySelector('[role="listbox"]')!;
 		const options = within(listbox as HTMLElement).getAllByRole('option');
 		await userEvent.click(options[1]);
-		await expect(trigger).toHaveAttribute('aria-expanded', 'false');
+		await expectDropdownClosed(trigger);
 		await expect(trigger).toHaveTextContent('Banana');
 	};
 
@@ -43,8 +49,8 @@
 		await userEvent.click(trigger);
 		await expect(trigger).toHaveAttribute('aria-expanded', 'true');
 		await userEvent.keyboard('{Escape}');
-		await expect(trigger).toHaveAttribute('aria-expanded', 'false');
-		await expect(trigger).toHaveTextContent('Select a fruit');
+		await expectDropdownClosed(trigger);
+		await expect(trigger).toHaveTextContent('Select produce');
 	};
 
 	const playDisabledIgnoresClick = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
@@ -63,10 +69,13 @@
 		await userEvent.click(trigger);
 		await expect(trigger).toHaveAttribute('aria-expanded', 'true');
 		await expect(document.querySelector('[role="listbox"]')).toBeInTheDocument();
-		await userEvent.click(canvasElement);
-		await waitFor(() => {
-			expect(trigger).toHaveAttribute('aria-expanded', 'false');
+		await new Promise<void>((resolve) => {
+			requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
 		});
+		await userEvent.click(
+			within(canvasElement).getByRole('button', { name: 'Outside target' }),
+		);
+		await expectDropdownClosed(trigger);
 	};
 
 	const playKeyboardArrowDown = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
@@ -86,6 +95,8 @@
 			);
 			expect(highlighted).toBeDefined();
 		});
+		await userEvent.keyboard('{Escape}');
+		await expectDropdownClosed(trigger);
 	};
 </script>
 
@@ -229,7 +240,7 @@
 			<Label>Fruit</Label>
 			<Select.Root type="single" bind:value={selectedDefault}>
 				<Select.Trigger class="w-48">{selectedDefaultLabel}</Select.Trigger>
-				<Select.Content portalProps={{ disabled: true }}>
+				<Select.Content portalProps={{ disabled: true }} preventScroll={false}>
 					<Select.Group>
 						{#each fruits as item (item.value)}
 							<Select.Item value={item.value} label={item.label} />
@@ -247,7 +258,7 @@
 			<Label>Fruit</Label>
 			<Select.Root type="single" bind:value={selectedDefault}>
 				<Select.Trigger class="w-48">{selectedDefaultLabel}</Select.Trigger>
-				<Select.Content portalProps={{ disabled: true }}>
+				<Select.Content portalProps={{ disabled: true }} preventScroll={false}>
 					<Select.Group>
 						{#each fruits as item (item.value)}
 							<Select.Item value={item.value} label={item.label} />
@@ -299,10 +310,11 @@
 <Story name="Click Outside Closes [play: click outside]" play={playClickOutsideCloses}>
 	{#snippet template()}
 		<div class="max-w-xs">
+			<button type="button">Outside target</button>
 			<Label>Fruit</Label>
 			<Select.Root type="single" bind:value={selectedDefault}>
 				<Select.Trigger class="w-48">{selectedDefaultLabel}</Select.Trigger>
-				<Select.Content portalProps={{ disabled: true }}>
+				<Select.Content portalProps={{ disabled: true }} preventScroll={false}>
 					<Select.Group>
 						{#each fruits as item (item.value)}
 							<Select.Item value={item.value} label={item.label} />
@@ -325,7 +337,7 @@
 			<Label>Fruit</Label>
 			<Select.Root type="single" bind:value={selectedDefault}>
 				<Select.Trigger class="w-48">{selectedDefaultLabel}</Select.Trigger>
-				<Select.Content portalProps={{ disabled: true }}>
+				<Select.Content portalProps={{ disabled: true }} preventScroll={false}>
 					<Select.Group>
 						{#each fruits as item (item.value)}
 							<Select.Item value={item.value} label={item.label} />
@@ -343,7 +355,7 @@
 			<Label>Produce</Label>
 			<Select.Root type="single" bind:value={selectedGroups}>
 				<Select.Trigger class="w-48">{selectedGroupsLabel}</Select.Trigger>
-				<Select.Content portalProps={{ disabled: true }}>
+				<Select.Content portalProps={{ disabled: true }} preventScroll={false}>
 					<Select.Group>
 						<Select.GroupHeading>Fruits</Select.GroupHeading>
 						{#each fruits as item (item.value)}
