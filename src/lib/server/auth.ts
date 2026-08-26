@@ -6,7 +6,7 @@ import { getRequestEvent } from '$app/server';
 import { getDb } from './db/index.js';
 import type { RequestEvent } from '@sveltejs/kit';
 
-const authOrigin = env.ORIGIN ?? env.APP_URL ?? 'http://localhost:8500';
+const authOrigin = env.APP_URL ?? env.ORIGIN ?? 'http://localhost:8500';
 
 export function createAuth(event?: RequestEvent) {
 	return betterAuth({
