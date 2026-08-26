@@ -1,0 +1,75 @@
+{
+	"$schema": "https://mpx.dev/schemas/mpxconfig.schema.json",
+	"schemaVersion": 1,
+	"project": {
+		"id": "MartinoPolo/template-sveltekit"
+	},
+	"repository": {
+		"provider": "github",
+		"remote": "origin"
+	},
+	"issues": {
+		"provider": "github"
+	},
+	"tooling": {
+		"packageManager": "pnpm"
+	},
+	"worktrees": {
+		"postCreate": {
+			"execution": "foreground",
+			"steps": [
+				{
+					"id": "install",
+					"uses": "package-install",
+					"required": true,
+					"timeoutSeconds": 900
+				}
+			]
+		}
+	},
+	"development": {
+		"services": {
+			"app": {
+				"scope": "checkout",
+				"port": { "mode": "managed", "preferred": 8500, "family": "template-sveltekit" },
+				"environmentVariable": "APP_URL",
+				"protocol": "http",
+				"start": { "type": "package-script", "script": "dev" }
+			},
+			"preview": {
+				"scope": "checkout",
+				"port": { "mode": "managed", "preferred": 8501, "family": "template-sveltekit" },
+				"environmentVariable": "PREVIEW_URL",
+				"protocol": "http",
+				"start": { "type": "package-script", "script": "preview" }
+			},
+			"storybook": {
+				"scope": "checkout",
+				"port": { "mode": "managed", "preferred": 8502, "family": "template-sveltekit" },
+				"environmentVariable": "STORYBOOK_URL",
+				"protocol": "http",
+				"start": { "type": "package-script", "script": "storybook" }
+			},
+			"vitest-client": {
+				"scope": "checkout",
+				"port": { "mode": "managed", "preferred": 8503, "family": "template-sveltekit" },
+				"environmentVariable": "VITEST_CLIENT_URL",
+				"protocol": "http",
+				"start": { "type": "test-only" }
+			},
+			"vitest-storybook": {
+				"scope": "checkout",
+				"port": { "mode": "managed", "preferred": 8504, "family": "template-sveltekit" },
+				"environmentVariable": "VITEST_STORYBOOK_URL",
+				"protocol": "http",
+				"start": { "type": "test-only" }
+			},
+			"database": {
+				"scope": "project",
+				"port": { "mode": "fixed-shared", "preferred": 5432 },
+				"protocol": "tcp",
+				"start": { "type": "external", "kind": "database" }
+			}
+		}
+	}
+}

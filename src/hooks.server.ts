@@ -17,10 +17,11 @@ const paraglideHandle: Handle = ({ event, resolve }) =>
 	});
 
 const authHandle: Handle = async ({ event, resolve }) => {
-	const { auth } = await import('$lib/server/auth.js');
+	const { createAuth } = await import('$lib/server/auth.js');
 	const { svelteKitHandler } = await import('better-auth/svelte-kit');
 	const { building } = await import('$app/environment');
 
+	const auth = createAuth(event);
 	const sessionData = await auth.api.getSession({ headers: event.request.headers });
 
 	if (sessionData) {

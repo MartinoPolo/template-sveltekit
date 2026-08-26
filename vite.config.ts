@@ -8,6 +8,9 @@ import { playwright } from '@vitest/browser-playwright';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execSync } from 'node:child_process';
+import { runtimePorts } from './scripts/runtime-ports.js';
+
+const managedPorts = runtimePorts();
 
 // Read current git branch at dev-server start so each worktree gets its own
 // branch name baked in — consumed by +layout.svelte to prefix browser tab titles.
@@ -25,6 +28,8 @@ const dirname =
 export default defineConfig({
 	server: {
 		open: true,
+		port: managedPorts.app,
+		strictPort: true,
 	},
 	define: {
 		// Exposed as __GIT_BRANCH__ global; consumed in +layout.svelte to prefix tab titles.
@@ -71,6 +76,11 @@ export default defineConfig({
 						enabled: true,
 						provider: playwright(),
 						instances: [{ browser: 'chromium', headless: true }],
+						api: {
+							host: '127.0.0.1',
+							port: managedPorts.vitestClient,
+							strictPort: true,
+						},
 					},
 					include: ['src/**/*.svelte.{test,spec}.{js,ts}'],
 					exclude: ['src/lib/server/**'],
@@ -99,6 +109,11 @@ export default defineConfig({
 						headless: true,
 						provider: playwright(),
 						instances: [{ browser: 'chromium' }],
+						api: {
+							host: '127.0.0.1',
+							port: managedPorts.vitestStorybook,
+							strictPort: true,
+						},
 					},
 				},
 			},

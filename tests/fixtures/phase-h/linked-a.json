@@ -1,0 +1,9 @@
+{
+	"scenario": "linked-a",
+	"APP_URL": "http://localhost:8505",
+	"PREVIEW_URL": "http://localhost:8506",
+	"STORYBOOK_URL": "http://localhost:8507",
+	"VITEST_CLIENT_URL": "http://localhost:8508",
+	"VITEST_STORYBOOK_URL": "http://localhost:8509",
+	"DATABASE_PORT": 5432
+}
