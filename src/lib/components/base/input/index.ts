@@ -1,4 +1,4 @@
-import Root from './Input.svelte';
+import Root from './input.svelte';
 
 export { Root, Root as Input };
 export { INPUT_STATES, type InputProps, type InputState, inputVariants } from './input_variants.js';
