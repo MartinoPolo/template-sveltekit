@@ -72,6 +72,7 @@ export default defineConfig({
 				extends: './vite.config.ts',
 				test: {
 					name: 'client',
+					sequence: { groupOrder: 0 },
 					browser: {
 						enabled: true,
 						provider: playwright(),
@@ -90,6 +91,7 @@ export default defineConfig({
 				extends: './vite.config.ts',
 				test: {
 					name: 'server',
+					sequence: { groupOrder: 1 },
 					environment: 'node',
 					include: ['src/**/*.{test,spec}.{js,ts}'],
 					exclude: ['src/**/*.svelte.{test,spec}.{js,ts}'],
@@ -104,6 +106,7 @@ export default defineConfig({
 				],
 				test: {
 					name: 'storybook',
+					sequence: { groupOrder: 2 },
 					browser: {
 						enabled: true,
 						headless: true,
