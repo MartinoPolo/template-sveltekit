@@ -33,11 +33,32 @@ export function serviceCommand(service, environment = process.env) {
 	throw new Error(`Unknown service: ${service}`);
 }
 
+/**
+ * @param {string[]} args
+ * @param {NodeJS.Platform} [platform]
+ * @param {string | undefined} [commandInterpreter]
+ */
+export function serviceInvocation(
+	args,
+	platform = process.platform,
+	commandInterpreter = process.env.ComSpec,
+) {
+	return platform === 'win32'
+		? {
+				executable: commandInterpreter ?? 'cmd.exe',
+				args: ['/d', '/s', '/c', 'pnpm', 'exec', ...args],
+			}
+		: { executable: 'pnpm', args: ['exec', ...args] };
+}
+
 /** @param {string[]} args @returns {Promise<void>} */
 function run(args) {
 	return new Promise((resolve, reject) => {
-		const executable = process.platform === 'win32' ? 'pnpm.cmd' : 'pnpm';
-		const child = spawn(executable, ['exec', ...args], { stdio: 'inherit', env: process.env });
+		const invocation = serviceInvocation(args);
+		const child = spawn(invocation.executable, invocation.args, {
+			stdio: 'inherit',
+			env: process.env,
+		});
 		child.once('error', reject);
 		child.once('exit', (code, signal) => {
 			if (code === 0) {

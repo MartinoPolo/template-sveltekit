@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { serviceCommand } from '../../../scripts/start-service.js';
+import { serviceCommand, serviceInvocation } from '../../../scripts/start-service.js';
 import { playwrightRuntime } from '../../../scripts/playwright-runtime.js';
 
 const packageJson = JSON.parse(readFileSync('package.json', 'utf8')) as {
@@ -19,6 +19,15 @@ describe('managed service launch configuration', () => {
 		expect(
 			serviceCommand('storybook', { STORYBOOK_URL: 'http://localhost:8512' }).args,
 		).toEqual(['svelte-kit', 'sync', '&&', 'storybook', 'dev', '-p', '8512', '--exact-port']);
+	});
+
+	it('launches package binaries through the Windows command interpreter', () => {
+		expect(
+			serviceInvocation(['wrangler', 'dev'], 'win32', 'C:\\Windows\\System32\\cmd.exe'),
+		).toEqual({
+			executable: 'C:\\Windows\\System32\\cmd.exe',
+			args: ['/d', '/s', '/c', 'pnpm', 'exec', 'wrangler', 'dev'],
+		});
 	});
 
 	it('couples Playwright and auth origin to the assigned app URL', () => {
