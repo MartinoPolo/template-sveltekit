@@ -99,7 +99,8 @@ Copy `.env.example` to `.env` and configure:
 | `GOOGLE_CLIENT_ID`     | No       | Google OAuth client ID                            |
 | `GOOGLE_CLIENT_SECRET` | No       | Google OAuth client secret                        |
 
-Google OAuth is automatically enabled when both `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` are set.
+Google OAuth is automatically enabled when both `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` are
+set.
 
 ## Authentication (BetterAuth)
 
@@ -113,7 +114,8 @@ Full auth system in `src/lib/server/auth.ts` with:
 
 ### Database schema
 
-Auth tables are defined in `src/lib/server/db/schema.ts`: `user`, `session`, `account`, `verification`.
+Auth tables are defined in `src/lib/server/db/schema.ts`: `user`, `session`, `account`,
+`verification`.
 
 ### Hooks integration
 
@@ -121,7 +123,8 @@ Auth tables are defined in `src/lib/server/db/schema.ts`: `user`, `session`, `ac
 
 ### Email sending
 
-Email callbacks in `auth.ts` currently log to console. Replace the `sendResetPassword` and `sendVerificationEmail` callbacks with your email service (Resend, SendGrid, Postmark, etc.).
+Email callbacks in `auth.ts` currently log to console. Replace the `sendResetPassword` and
+`sendVerificationEmail` callbacks with your email service (Resend, SendGrid, Postmark, etc.).
 
 ### Production checklist
 
@@ -133,7 +136,8 @@ Email callbacks in `auth.ts` currently log to console. Replace the `sendResetPas
 
 ## Internationalization (Paraglide)
 
-URL-based i18n with cookie fallback. English is the base locale (no prefix), Czech uses `/cs/` prefix.
+URL-based i18n with cookie fallback. English is the base locale (no prefix), Czech uses `/cs/`
+prefix.
 
 ### Strategy
 
@@ -161,7 +165,8 @@ Configured in `vite.config.ts` as `['url', 'cookie', 'baseLocale']`:
 
 ### VS Code extension
 
-Install the [Inlang VS Code extension](https://inlang.com/m/r7kp499g/app-inlang-ideExtension) for inline translation editing and key extraction.
+Install the [Inlang VS Code extension](https://inlang.com/m/r7kp499g/app-inlang-ideExtension) for
+inline translation editing and key extraction.
 
 ### Removing i18n
 
@@ -177,22 +182,27 @@ If your project doesn't need i18n:
 
 ## Svelte Inspector
 
-Press **Alt+X** during development to toggle the Svelte Inspector. Click any element to jump to its source code in your editor. Configured in `svelte.config.js` under `vitePlugin.inspector`.
+Press **Alt+X** during development to toggle the Svelte Inspector. Click any element to jump to its
+source code in your editor. Configured in `svelte.config.js` under `vitePlugin.inspector`.
 
 ## Experimental Features
 
 ### Remote Functions
 
-Type-safe client-server RPC. Functions defined with the remote function API run on the server but can be called from the client with full type safety. Enabled via `kit.experimental.remoteFunctions` in `svelte.config.js`.
+Type-safe client-server RPC. Functions defined with the remote function API run on the server but
+can be called from the client with full type safety. Enabled via `kit.experimental.remoteFunctions`
+in `svelte.config.js`.
 
 ### Async Components
 
-Use `await` directly in Svelte components without `{#await}` blocks. Enabled via `compilerOptions.experimental.async` in `svelte.config.js`.
+Use `await` directly in Svelte components without `{#await}` blocks. Enabled via
+`compilerOptions.experimental.async` in `svelte.config.js`.
 
 ## UI Components (shadcn-svelte)
 
-Pre-configured [shadcn-svelte](https://next.shadcn-svelte.com/) component library with a green theme.
-Components live in `src/lib/components/base/`. Use the `cn()` utility from `$lib/utils` for conditional class merging.
+Pre-configured [shadcn-svelte](https://next.shadcn-svelte.com/) component library with a green
+theme. Components live in `src/lib/components/base/`. Use the `cn()` utility from `$lib/utils` for
+conditional class merging.
 
 ### Component Architecture
 
@@ -203,14 +213,19 @@ Components follow a two-tier structure:
 | **Primitives** | `src/lib/components/base/`    | kebab-case files, dual PascalCase exports | CLI-managed shadcn-svelte components — do not edit directly               |
 | **Derived**    | `src/lib/components/derived/` | PascalCase files                          | App-level composites that reduce nesting by combining multiple primitives |
 
-Derived components use descriptive PascalCase names that avoid collisions with the `base/` namespace (e.g. `LabeledSelect` instead of `Select`, `SectionCard` instead of `Card`). Inside derived components, import `base/` primitives with their standard namespace import (`import * as Select from '$lib/components/base/select/index.js'`).
+Derived components use descriptive PascalCase names that avoid collisions with the `base/` namespace
+(e.g. `LabeledSelect` instead of `Select`, `SectionCard` instead of `Card`). Inside derived
+components, import `base/` primitives with their standard namespace import
+(`import * as Select from '$lib/components/base/select/index.js'`).
 
-Standalone components that don't compose multiple primitives (like `DarkModeToggle`) stay at the `src/lib/components/` root.
+Standalone components that don't compose multiple primitives (like `DarkModeToggle`) stay at the
+`src/lib/components/` root.
 
 ## Dark Mode
 
-Theme toggling powered by [mode-watcher](https://github.com/svecosystem/mode-watcher) with three modes: light, dark, and system.
-The `DarkModeToggle` component cycles through modes on click. A flash-prevention script in `app.html` ensures no FOUC on page load.
+Theme toggling powered by [mode-watcher](https://github.com/svecosystem/mode-watcher) with three
+modes: light, dark, and system. The `DarkModeToggle` component cycles through modes on click. A
+flash-prevention script in `app.html` ensures no FOUC on page load.
 
 ## Font Optimization
 
@@ -221,7 +236,8 @@ Two variable fonts loaded via inline `@font-face` declarations:
 | Figtree Variable   | Headings |
 | Noto Sans Variable | Body     |
 
-Both fonts include `latin` and `latin-ext` subsets. Metric-adjusted Arial fallback fonts prevent CLS (Cumulative Layout Shift). Fonts are preloaded via `<link rel="preload">` in server hooks.
+Both fonts include `latin` and `latin-ext` subsets. Metric-adjusted Arial fallback fonts prevent CLS
+(Cumulative Layout Shift). Fonts are preloaded via `<link rel="preload">` in server hooks.
 
 ## Reactivity Utilities
 
@@ -233,13 +249,17 @@ Reusable reactive primitives in `src/lib/reactivity/`:
 | `Derived<T>`   | Reactive derived value using `$derived.by`                                |
 | `Persisted<T>` | Reactive state persisted to `localStorage` with JSON serde and type guard |
 
-`Persisted<T>` accepts a key, default value, and a type guard function. It reads from `localStorage` on init and writes back on every change.
+`Persisted<T>` accepts a key, default value, and a type guard function. It reads from `localStorage`
+on init and writes back on every change.
 
 ## Context Pattern
 
-Type-safe Svelte context using `setContext` / `getContext`. Context keys are centralized in `src/lib/context/context_key.ts`.
+Type-safe Svelte context using `setContext` / `getContext`. Context keys are centralized in
+`src/lib/context/context_key.ts`.
 
-Each context module exports a `set` function (called in the parent layout) and a `get` function (called in child components). See `src/lib/context/showcase_form.context.svelte.ts` for a working example that combines `Persisted`, `StateRaw`, and `Derived`.
+Each context module exports a `set` function (called in the parent layout) and a `get` function
+(called in child components). See `src/lib/context/showcase_form.context.svelte.ts` for a working
+example that combines `Persisted`, `StateRaw`, and `Derived`.
 
 For SSR of persisted values, use Skeleton placeholders to avoid hydration mismatches.
 
@@ -252,7 +272,8 @@ pnpm run storybook        # dev server on port 6006
 pnpm run build:storybook  # static build
 ```
 
-Place story files next to components: `src/lib/components/Button.stories.svelte` or `Button.stories.ts`.
+Place story files next to components: `src/lib/components/Button.stories.svelte` or
+`Button.stories.ts`.
 
 ## Deployment
 
@@ -260,10 +281,12 @@ Place story files next to components: `src/lib/components/Button.stories.svelte`
 
 This template uses `@sveltejs/adapter-cloudflare`. Deploy via:
 
-1. **Cloudflare Dashboard**: Connect your GitHub repo at [dash.cloudflare.com](https://dash.cloudflare.com) for automatic deployments and PR preview URLs
+1. **Cloudflare Dashboard**: Connect your GitHub repo at
+   [dash.cloudflare.com](https://dash.cloudflare.com) for automatic deployments and PR preview URLs
 2. **CLI**: `npx wrangler pages deploy .svelte-kit/cloudflare`
 
-Configuration is in `wrangler.jsonc`. Add Cloudflare bindings (KV, D1, R2) in `src/app.d.ts` under `App.Platform`.
+Configuration is in `wrangler.jsonc`. Add Cloudflare bindings (KV, D1, R2) in `src/app.d.ts` under
+`App.Platform`.
 
 ### Switching adapter
 
@@ -298,7 +321,8 @@ See [SvelteKit adapters docs](https://svelte.dev/docs/kit/adapters) for the full
 
 ### Auto-deploy
 
-Connect your repo to Cloudflare Pages for automatic deployments on push to `main` and PR preview environments.
+Connect your repo to Cloudflare Pages for automatic deployments on push to `main` and PR preview
+environments.
 
 ## Code Conventions
 
