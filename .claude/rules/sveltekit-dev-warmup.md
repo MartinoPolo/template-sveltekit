@@ -1,1 +1,1 @@
-C:/_MP_projects/mpx-claude-code/rules-per-project/sveltekit-dev-warmup.md
+C:/_MP_projects/mpx/dist/claude/rules/projects/sveltekit-dev-warmup.md
