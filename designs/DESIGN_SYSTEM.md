@@ -21,4 +21,4 @@
 
 ## Motion & Transitions
 
-<!-- Animation approach: none, subtle, expressive -->
+<!-- Animation approach: none, subtle, expressive. Values are the motion tokens in src/app.css. -->
